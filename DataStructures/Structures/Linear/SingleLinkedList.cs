@@ -82,8 +82,11 @@ namespace DataStructures
             iterator.mNext = newNode;
         }
 
-        // Remove entry at supplied index
-        public void Remove(int index) {}
+        
+        public void Remove(int index)               // Remove entry at supplied index
+        {
+
+        }
 
         // Set entry to list entry at supplied index
         public void Replace(T entry, int index) {}
@@ -113,19 +116,24 @@ namespace DataStructures
             int indexOfFirstMatch = 0;
                                                                 //b) Iterator - find LAST - WHILE loop
             Node<T> iterator = mHead;                               //b1) create iterator - var of type Node<T> -> set to mHead
-            while(iterator.mNext != null)
+            while(iterator.mNext != null)                           //b2) while loop - iterate until mNext is null (end of LL)
             {
-                iterator = iterator.mNext;
-                if(iterator.mData.Equals(entry))
+                
+                if(iterator.mData.Equals(entry))                    //b3) check if mData = entry        note: use "equals" function not "=" operator
                 {
                     indexOfFirstMatch = indexCount;
                     hasFoundData = true;
                     break;
                 }
-
-
+                iterator = iterator.mNext;                          //b4) incument iterator and indexCount
+                indexCount++;
             }
-            return -1; 
+
+            if(hasFoundData==false)                             //c) check if match was found -> set indexOfFirstMatch to -1 if false
+            {
+                indexOfFirstMatch = -1;
+            }
+            return indexOfFirstMatch; 
         }
 
         

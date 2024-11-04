@@ -130,7 +130,13 @@ namespace DataStructures
             {
                 mHead.mData = entry;
             }
-                                                            //c) ITERATOR GET/REPLACE VAR  - find node at INDEX
+                                                            //c) ITERATOR GET/REPLACE VAR  - find node at INDEX - FOR loop
+            Node<T> iterator = mHead;                           //c1) create iterator  - var type Node<T>                   -> set to mHead
+            for(int i = 0; i < index; i++)
+            {
+                iterator = iterator.mNext;
+            }
+            iterator.mData = entry;                         //d) set mData to entry
         }
 
         
@@ -182,7 +188,7 @@ namespace DataStructures
         public int Size()                           // Return current size of list.
         {
             int listSize = 0;                               //a) create local "listSize" var set to 0
-                                                            //b) ERROR CHECK    -   if LL is empty
+                                                            //b) ERROR CHECK    -   LL is empty
             if (mHead == null)                               // if LL is empty - return 0
             {
                 return 0;
@@ -199,7 +205,21 @@ namespace DataStructures
             return listSize; 
         }
 
-        // Prints all elements of the list to the screen
-        public void Print() { }
+        
+        public void Print()                         // Prints all elements of the list to the screen
+        {
+            if (Size() == 0)                            //a) SIZE CHECK     - LL is empty
+            {
+                throw new Exception("list is empty. Can't print");
+            }
+                                                        //b) ITERATOR FIND LAST NODE - mNext != null - WHILE LOOP
+            Node<T> iterator = mHead;                       //b1) create iterator - var type Node<T>                    -> set to mHead
+            while(iterator.mNext != null)
+            {
+                Console.WriteLine(iterator.mData);
+                Console.WriteLine('\n');
+                iterator = iterator.mNext;
+            }
+        }
     }
 }

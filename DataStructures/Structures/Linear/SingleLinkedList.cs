@@ -37,13 +37,13 @@ namespace DataStructures
             Node<T> newNode = new Node<T>();                //a) create newNode - var of type Node<T>                   - new memory block
             newNode.mData = entry;                          // & set mData of newNode to param "entry"
 
-                                                            //b) ERROR CHECK - LL empty
+                                                            //b) ERROR CHECK    -   LL empty
             if(mHead == null)
             {
                 mHead = newNode;                                //Set mHead to newNode if empty
                 return;
             }
-                                                            //c) Iterator - find node at END - WHILE loop
+                                                            //c) ITERATOR FIND LAST NODE - mNext != null - WHILE LOOP
             Node<T> iterator = mHead;                           //c1) create iterator - var of type Node<T>                 -> set to mHead
             while(iterator.mNext != null)                       //c2) while loop - iterate until mNext is null (end of list)
             {
@@ -58,26 +58,26 @@ namespace DataStructures
             Node<T> newNode = new Node<T>();                //a) create newNode - var of type Node<T> - new memory block
             newNode.mData = entry;                          //& set mData of newNode to param "entry"
 
-                                                            //b) ERROR CHECK - index in range   -    LL empty   -    inserting @ index 0 
+                                                            //b) ERROR CHECK        -   index our of range      -  index less than 0  
             int listSize = Size();                              //b1) create listSize var - get LL size. 
             if(index > listSize ||index < 0)                    //b2) check if index in range   -   index less than zero  
             {
                 throw new ArgumentOutOfRangeException("index outside range in Insert function");
             }
-            if(listSize==0 || index==0)                         //b3) check if LL is empty - or - if index param is 0       -> set newNode to mHead if true
+            if(listSize==0 || index==0)                     //c) SIZE/INDEX CHECK   -   LL empty        -   index 0 (add @head)    
             {
                 newNode.mNext = mHead;                              //set mNext of newNode to mHead.        
                 mHead=newNode;                                      //set mHead to newNode
                 return;                                                 //Note: mHead=null if list is empty and newNode.mNext=null b/c it's 1st and last node
             }
-                                                            //c) Iterator - find Node at INDEX-1 -> FOR loop
+                                                            //d) ITERATOR INSERT/REMOVE - find Node at INDEX-1 -> FOR loop
             Node<T> iterator = mHead;                           //c1) create iterator - var of type Node<T>                 -> set to mHead
             for(int i = 0; i < index-1; i++)                    //c2) for loop - iterate until index-1 (INSERT/REMOVE) 
             {                                                               
                 iterator = iterator.mNext;
             }                                                       // exit loop when i (iterator) is at position prior to insert location 
 
-                                                            //d) Set mNext of newNode & Iterator
+                                                            //e) Set mNext of newNode & Iterator
             newNode.mNext = iterator.mNext;
             iterator.mNext = newNode;
         }
@@ -96,16 +96,16 @@ namespace DataStructures
         
         public void Remove(int index)               // Remove entry at supplied index
         {
-            if(index > Size() || index < 0)                 //a) ERROR CHECK    - index out range  - index less than 0
+            if(index > Size() || index < 0)                 //a) ERROR CHECK    -   index out range     -    index less than 0
             {
                 throw new ArgumentOutOfRangeException("index greater than LL Size or index less than 0");
             }
-            if(index == 0)                                  //b) check if removing from Head  (index is 0)
+            if(index == 0)                                  //b) SIZE/INDEX CHECK   -   index 0 (remove @head)  
             {
                 RemoveHead();
                 return;
             }
-                                                            //c) Iterator   - find node at INDEX-1  -> FOR loop
+                                                            //c) ITERATOR INSERT/REMOVE NODE - find node at INDEX-1  -> FOR loop
             Node<T> iterator = mHead;                           //c1) create iterator - var type Node<T>                    -> set to mHead
             for (int i = 0; i < index - 1; i++)                 //c2) for loop - iterate until index-1 (INSERT/REMOVE) 
             {
@@ -119,18 +119,29 @@ namespace DataStructures
 
         }
 
-        // Set entry to list entry at supplied index
-        public void Replace(T entry, int index) {}
+        
+        public void Replace(T entry, int index)         // Set entry to list entry at supplied index
+        {
+            if(index > Size()|| index < 0)                  //a) ERRROR CHECK   -   index of out range      -   index less than 0
+            {
+                throw new ArgumentOutOfRangeException("index is greater than link list size or less than 0.");
+            }
+            if(index == 0)                                  //b) SIZE CHECK       -   index 0 (replace mData @head)  
+            {
+                mHead.mData = entry;
+            }
+                                                            //c) ITERATOR GET/REPLACE VAR  - find node at INDEX
+        }
 
         
         public T Get(int index)                         // Returns the data contained at the provided index
         {
-                                                                //a) ERROR CHECK - index in range
+                                                                //a) ERROR CHECK    -   index in range
             if(index < 0 || index > Size())                         //check if index in range - index less than zero - or - index greater than ListSize 
             {
                 throw new ArgumentOutOfRangeException("index outside range in Get Function");
             }
-                                                                //b) Iterator - find node at INDEX - FOR loop      
+                                                                //b) ITERATOR GET/REPLACE VAR - find node at INDEX - FOR loop      
             Node<T> iterator = mHead;                               //b1) create iterator - var of type Node<T> -> set to mHead
             for(int i = 0; i < index; i++)                          //b2) for loop - iterate until index (RETURNING VAR)
             {
@@ -145,7 +156,7 @@ namespace DataStructures
             bool hasFoundData = false;                          //a) create hasFound and indexCount var     -    hasFound used for case when no mData matches entry searched
             int indexCount = 0;
             int indexOfFirstMatch = 0;
-                                                                //b) Iterator - find LAST - WHILE loop
+                                                                //b) ITERATOR FIND LAST NODE - mNext != null - WHILE LOOP
             Node<T> iterator = mHead;                               //b1) create iterator - var of type Node<T> -> set to mHead
             while(iterator.mNext != null)                           //b2) while loop - iterate until mNext is null (end of LL)
             {
@@ -171,12 +182,12 @@ namespace DataStructures
         public int Size()                           // Return current size of list.
         {
             int listSize = 0;                               //a) create local "listSize" var set to 0
-                                                            //b) ERROR CHECK -  if LL is empty
+                                                            //b) ERROR CHECK    -   if LL is empty
             if (mHead == null)                               // if LL is empty - return 0
             {
                 return 0;
             }                                
-                                                            //c) iterator - find LAST - WHILE LOOP
+                                                            //c) ITERATOR FIND LAST NODE - mNext != null - WHILE LOOP
              listSize++;                                        //c1) increase "listSize" by 1      -   iterator handles iteration above size of 1. This accounts for Node at mHead.
 
             Node<T> iterator = mHead;                           //c1) create iterator - var of type Node<T> - set to mHead

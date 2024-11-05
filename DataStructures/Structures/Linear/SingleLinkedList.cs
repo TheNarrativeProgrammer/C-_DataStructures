@@ -18,18 +18,18 @@ namespace DataStructures
         {
             for(int i = 0; i < arrayCopy.Length; i++)
             {
-               
+               Append(arrayCopy[i]);
             }
         } 
 
         
-        public void AddtoHead(T entry)                 // Add entry to START of list.
+        public void AddtoHead(T entry)              // Add entry to START of list.
         {
             Node<T> newNode = new Node<T>();                //a) create newNode - var of type Node<T>                   - new memory block
             newNode.mData = entry;                          // & set mData of newNode to param "entry"
 
-            newNode.mNext = mHead;                          //b) set mNext of newNode & update mhead 
-            mHead = newNode;                            
+            newNode.mNext = mHead;                          //b) set newNode.mNext              -> set to mHead
+            mHead = newNode;                                //c) set LL mHead                   -> set to newNode
         }
 
         public void Append(T entry)                 // Appends entry to END of list.
@@ -37,7 +37,7 @@ namespace DataStructures
             Node<T> newNode = new Node<T>();                //a) create newNode - var of type Node<T>                   - new memory block
             newNode.mData = entry;                          // & set mData of newNode to param "entry"
 
-                                                            //b) ERROR CHECK    -   LL empty
+                                                            //b) SIZE CHECK    -   LL empty
             if(mHead == null)
             {
                 mHead = newNode;                                //Set mHead to newNode if empty
@@ -58,13 +58,12 @@ namespace DataStructures
             Node<T> newNode = new Node<T>();                //a) create newNode - var of type Node<T> - new memory block
             newNode.mData = entry;                          //& set mData of newNode to param "entry"
 
-                                                            //b) ERROR CHECK        -   index our of range      -  index less than 0  
-            int listSize = Size();                              //b1) create listSize var - get LL size. 
-            if(index > listSize ||index < 0)                    //b2) check if index in range   -   index less than zero  
+                                                            //b) ERROR CHECK     -   index out of range      -  index less than 0  
+            if(index > Size()  || index < 0)
             {
                 throw new ArgumentOutOfRangeException("index outside range in Insert function");
             }
-            if(listSize==0 || index==0)                     //c) SIZE/INDEX CHECK   -   LL empty        -   index 0 (add @head)    
+            if(index==0)                                    //c) SIZE/INDEX CHECK   -   index 0 (add @head)    
             {
                 newNode.mNext = mHead;                              //set mNext of newNode to mHead.        
                 mHead=newNode;                                      //set mHead to newNode
@@ -75,11 +74,10 @@ namespace DataStructures
             for(int i = 0; i < index-1; i++)                    //c2) for loop - iterate until index-1 (INSERT/REMOVE) 
             {                                                               
                 iterator = iterator.mNext;
-            }                                                       // exit loop when i (iterator) is at position prior to insert location 
-
-                                                            //e) Set mNext of newNode & Iterator
-            newNode.mNext = iterator.mNext;
-            iterator.mNext = newNode;
+            }                                                       // exit loop when i (iterator) is at position prior to insert location
+                                                                    
+            newNode.mNext = iterator.mNext;                 //e) Set newNode.mNext                  -> set to iterator.mNext
+            iterator.mNext = newNode;                       //f) set iterator.mNext                 -> set to newNode
         }
 
         public void RemoveHead()
@@ -142,14 +140,14 @@ namespace DataStructures
         
         public T Get(int index)                         // Returns the data contained at the provided index
         {
-                                                                //a) ERROR CHECK    -   index in range
-            if(index < 0 || index > Size())                         //check if index in range - index less than zero - or - index greater than ListSize 
+                                                                //a) ERROR CHECK    -   index in range      -   index less than 0
+            if(index < 0 || index > Size())                        
             {
                 throw new ArgumentOutOfRangeException("index outside range in Get Function");
             }
                                                                 //b) ITERATOR GET/REPLACE VAR - find node at INDEX - FOR loop      
             Node<T> iterator = mHead;                               //b1) create iterator - var of type Node<T> -> set to mHead
-            for(int i = 0; i < index; i++)                          //b2) for loop - iterate until index (RETURNING VAR)
+            for(int i = 0; i < index; i++)                          //b2) for loop - iterate until index (GET VAR)
             {
                 iterator = iterator.mNext;
             }
@@ -192,12 +190,12 @@ namespace DataStructures
             if (mHead == null)                               // if LL is empty - return 0
             {
                 return 0;
-            }                                
-                                                            //c) ITERATOR FIND LAST NODE - mNext != null - WHILE LOOP
-             listSize++;                                        //c1) increase "listSize" by 1      -   iterator handles iteration above size of 1. This accounts for Node at mHead.
-
-            Node<T> iterator = mHead;                           //c1) create iterator - var of type Node<T> - set to mHead
-            while (iterator.mNext != null)                      //c2) while loop - iterate until iterator.mNext is null (end of list)
+            }
+            listSize++;                                     //c) increase "listSize" by 1      -   iterator handles iteration above size of 1. This accounts for Node at mHead.
+                                                               
+                                                            //d) ITERATOR FIND LAST NODE - mNext != null - WHILE LOOP
+            Node<T> iterator = mHead;                           //d1) create iterator - var of type Node<T> - set to mHead
+            while (iterator.mNext != null)                      //d2) while loop - iterate until iterator.mNext is null (end of list)
             {
                 iterator = iterator.mNext;                      //set iterator to iterator.mNext (next node in list to check)
                 listSize++;                                        //update listSize count +1

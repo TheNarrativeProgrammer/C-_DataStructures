@@ -105,8 +105,8 @@ namespace DataStructures
             NodeDouble<T> nodeToDelete = iterator.mNext;        //d) create nodeToDelete                    -> set to iterator.mNext
             iterator.mNext = nodeToDelete.mNext;                //e) move iterator.mNext down LL line       -> set to nodeToDelete.mNext
             nodeToDelete.mNext.mPrevious = iterator;            //f) move Node2D.mNext.mPrevious down line  -> set to iterator          *****unique step*******           
-            nodeToDelete.mNext = null;                          //f) de-ref nodeToDelet.mNext               -> set to null
-            nodeToDelete.mPrevious = null;                      //f) de-ref nodeToDelet.mPrevious           -> set to null              *****unique step*******
+            nodeToDelete.mNext = null;                          //g) de-ref nodeToDelet.mNext               -> set to null
+            nodeToDelete.mPrevious = null;                      //h) de-ref nodeToDelet.mPrevious           -> set to null              *****unique step*******
         }
 
         

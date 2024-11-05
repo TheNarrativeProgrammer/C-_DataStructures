@@ -107,13 +107,32 @@ namespace DataStructures
             nodeToDelete.mNext.mPrevious = iterator;            //f) move Node2D.mNext.mPrevious down line  -> set to iterator          *****unique step*******           
             nodeToDelete.mNext = null;                          //f) de-ref nodeToDelet.mNext               -> set to null
             nodeToDelete.mPrevious = null;                      //f) de-ref nodeToDelet.mPrevious           -> set to null              *****unique step*******
-
-
-
         }
 
-        // Set entry to list entry at supplied index, throws an exception on failure
-        public void Replace(T entry, int index) {}
+        
+        public void Replace(T entry, int index)     // Set entry to list entry at supplied index, throws an exception on failure
+        {
+            if(index > Size() || index <0)
+            {
+                throw new ArgumentOutOfRangeException("out of range");
+            }
+            if(mHead==null)
+            {
+                throw new Exception("List empty. Nothing to replace");
+            }
+            if(index == 0)
+            {
+                mHead.mData = entry;
+                return;
+            }
+
+            NodeDouble<T> iterator = mHead;
+            for(int i = 0; i < index; i++)
+            {
+                iterator = iterator.mNext;
+            }
+            iterator.mData = entry;
+        }
 
         
         public T Get(int index)                     // Returns the data contained at the provided index, throws an exception on failure 
@@ -132,8 +151,34 @@ namespace DataStructures
             return iterator.mData;                                  //c) return mData of iterator. 
         }
 
-        // Return index of first instance of supplied entry or -1 if not found.
-        public int Find(T entry) { return -1; }
+        
+        public int Find(T entry)                // Return index of first instance of supplied entry or -1 if not found.
+        {
+            bool hasFoundData = false;                          //a) create hasFound                -       for case when no mData matches entry searched
+            int indexCount = 0;                                     //a1) create indexCount         -       iteration count
+            int indexOfFirstMatch = 0;                              //a2) create indexOfFirstMatch  -       stores index of match
+
+                                                                 //b) ITERATOR FIND LAST NODE - mNext != null - WHILE LOOP
+            NodeDouble<T> iterator = mHead;                         //b1) create iterator - var of type Node<T> -> set to mHead
+            while(iterator.mNext != null)                           //b2) while loop - iterate until mNext is null (end of LL)
+            {
+                
+                if(iterator.mData.Equals(entry))                    //b3) check if mData = entry        note: use "equals" function not "=" operator
+                {
+                    indexOfFirstMatch = indexCount;
+                    hasFoundData = true;
+                    break;
+                }
+                iterator = iterator.mNext;                          //b4) incument iterator and indexCount
+                indexCount++;
+            }
+
+            if(hasFoundData==false)                             //c) check if match was found -> set indexOfFirstMatch to -1 if false
+            {
+                indexOfFirstMatch = -1;
+            }
+            return indexOfFirstMatch; 
+        }
 
         
         public int Size()                           // Return current size of list.

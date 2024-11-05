@@ -28,8 +28,8 @@ namespace DataStructures
             Node<T> newNode = new Node<T>();                //a) create newNode - var of type Node<T>                   - new memory block
             newNode.mData = entry;                          // & set mData of newNode to param "entry"
 
-            newNode.mNext = mHead;                          //b) set newNode.mNext              -> set to mHead
-            mHead = newNode;                                //c) set LL mHead                   -> set to newNode
+            newNode.mNext = mHead;                          //b) set newNode.mNext                  -> set to mHead
+            mHead = newNode;                                //c) set LL mHead                       -> set to newNode
         }
 
         public void Append(T entry)                 // Appends entry to END of list.
@@ -69,8 +69,8 @@ namespace DataStructures
                 mHead=newNode;                                      //set mHead to newNode
                 return;                                                 //Note: mHead=null if list is empty and newNode.mNext=null b/c it's 1st and last node
             }
-                                                            //d) ITERATOR INSERT/REMOVE - find Node at INDEX-1 -> FOR loop
-            Node<T> iterator = mHead;                           //c1) create iterator - var of type Node<T>                 -> set to mHead
+                                                            //C) ITERATOR INSERT/REMOVE NODE    -   find node at Index-1     -  for loop
+            Node<T> iterator = mHead;                           //c1) create iterator -                -> set to mHead
             for(int i = 0; i < index-1; i++)                    //c2) for loop - iterate until index-1 (INSERT/REMOVE) 
             {                                                               
                 iterator = iterator.mNext;
@@ -86,9 +86,9 @@ namespace DataStructures
             {
                 throw new ArgumentNullException("Link list is empty. Can't remove from empty list");
             }
-            Node<T> currentHead = mHead;                    //b) store currentHead - var type Node<T>
-            mHead = mHead.mNext;                            //c) set mHead to mHead.mNext           -   move mHead to next Node
-            currentHead = null;                             //d) set currentHead t0 null            -   remove reference to currentHead
+            Node<T> currentHead = mHead;                    //b1) create currentHead                -> set to  mHead                -   store current mhead
+            mHead = mHead.mNext;                            //c) update LL mHead                    -> set to mHead.mNext           -   move mHead to next Node (mHead.mNext)
+            currentHead = null;                             //b3) de-ref currentHead                -> set to null                  -   removes ref to currentHead
         }
 
         
@@ -103,7 +103,7 @@ namespace DataStructures
                 RemoveHead();
                 return;
             }
-                                                            //c) ITERATOR INSERT/REMOVE NODE - find node at INDEX-1  -> FOR loop
+                                                            //C) ITERATOR INSERT/REMOVE NODE    -   find node at Index-1     -  for loop
             Node<T> iterator = mHead;                           //c1) create iterator - var type Node<T>                    -> set to mHead
             for (int i = 0; i < index - 1; i++)                 //c2) for loop - iterate until index-1 (INSERT/REMOVE) 
             {
@@ -111,9 +111,9 @@ namespace DataStructures
             }                                                   //Exit loop when iterator = node-BEFORE-node-to-delete      
                                                                         //iterator.mNext = nodeToDelete                     
 
-            Node<T> nodeToDelete = iterator.mNext;          //d) create/save nodeToDelete                                   -> set as iterator.mNext
-            iterator.mNext = nodeToDelete.mNext;            //e) move iterator.mNext down LL line (next.next)               -> set as nodeToDelete.mNext
-            nodeToDelete.mNext = null;                      //f) dereference nodeToDelet.mNext                              -> set to null
+            Node<T> nodeToDelete = iterator.mNext;          //d) create nodeToDelete                    -> set as iterator.mNext
+            iterator.mNext = nodeToDelete.mNext;            //e) move iterator.mNext down LL line       -> set to nodeToDelete.mNext
+            nodeToDelete.mNext = null;                      //f) de-ref nodeToDelet.mNext          -> set to null
 
         }
 

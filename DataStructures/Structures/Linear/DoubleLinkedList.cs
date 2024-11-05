@@ -46,7 +46,7 @@ namespace DataStructures
                 iterator = iterator.mNext;
             }
             iterator.mNext = newNode;                           //d) set iterator.mNext             -> set to newNode
-            newNode.mPrevious = iterator;                       //e) set newNode.mPrevious          -> set to iterator
+            newNode.mPrevious = iterator;                       //e) set newNode.mPrevious          -> set to iterator                  *****unique step*******
 
         }
 
@@ -66,19 +66,51 @@ namespace DataStructures
                 mHead.mPrevious = newNode;                          //c2) set current mHead.previous     -> set to newNode
                 mHead = newNode;                                    //c3) set LL mHead                   -> set to newNode
             }
-                                                                //d) ITERATOR REMOVE/INSERT - find node at Index-1     - for loop
+                                                                //d) ITERATOR INSERT/REMOVE NODE    -   find node at Index-1     -  for loop
             NodeDouble<T> iterator = mHead;                         //d1) create iterator
             for(int i = 0; i < index-1; i++)                        //d2) For loop -iterate until index-1 (INSERT/REMOVE) 
             {
                 iterator = iterator.mNext;
             }
-            newNode.mNext = iterator.mNext;                     //e) set newNode.mNext                  -> set to iterator.mNext
-            iterator.mNext = newNode;                           //f) set iterator.mNext                 -> set to newNode                 
-            newNode.mPrevious = iterator;                       //g) set newNode.mPrevious              -> set to iterator          **unique step**
+            newNode.mNext = iterator.mNext;                     //e) set newNode.mNext                      -> set to iterator.mNext
+            iterator.mNext = newNode;                           //f) set iterator.mNext                     -> set to newNode                 
+            newNode.mPrevious = iterator;                       //g) set newNode.mPrevious                  -> set to iterator          *****unique step*******
         }
 
-        // Remove entry at supplied index, throws an exception on failure
-        public void Remove(int index) {}
+        
+        public void Remove(int index)               // Remove entry at supplied index, throws an exception on failure
+        {
+            if(index > Size() || index < 0)                     //a) ERROR CHECK    -   index out range     -    index less than 0
+            {
+                throw new ArgumentOutOfRangeException("index out of range or less than one in Remove function of DoubleLinked List."); 
+            }
+            if (mHead == null)                                      //a1) ERROR CHECK    -   LL empty
+            {
+                throw new Exception("Link list is empty. Can't use Remove function in DoubleLinkedList Class");
+            }
+            if (index == 0)                                     //b) SIZE/INDEX CHECK   -   index 0 (remove @head)      -   LL not empty
+            {
+                NodeDouble<T> currentHead = mHead;                  //b1) create currentHead                -> set to  mHead                -   store current mhead
+                mHead = mHead.mNext;                                //b2) move LL mHead down line           -> set to mHead.mNext           -   move mHead to next Node (mHead.mNext)
+                currentHead = null;                                 //b3) de-ref currentHead                -> set to null                  -   removes ref to currentHead
+                mHead.mPrevious = null;                             //b4) de-ref mHead.Previous             -> set to null                  -   NOTE: Pedro, is this step necessary?
+                return;
+            }
+                                                                //c) ITERATOR INSERT/REMOVE NODE    -   find node at Index-1     -  for loop
+            NodeDouble<T> iterator = mHead;                         //c1) create iterator
+            for(int i = 0; i < index - 1; i++)                        //c2) for loop  - iterate until index-1 (INSERT/REMOVE)  
+            {
+                iterator = iterator.mNext;
+            }
+            NodeDouble<T> nodeToDelete = iterator.mNext;        //d) create nodeToDelete                    -> set to iterator.mNext
+            iterator.mNext = nodeToDelete.mNext;                //e) move iterator.mNext down LL line       -> set to nodeToDelete.mNext
+            nodeToDelete.mNext.mPrevious = iterator;            //f) move Node2D.mNext.mPrevious down line  -> set to iterator          *****unique step*******           
+            nodeToDelete.mNext = null;                          //f) de-ref nodeToDelet.mNext               -> set to null
+            nodeToDelete.mPrevious = null;                      //f) de-ref nodeToDelet.mPrevious           -> set to null              *****unique step*******
+
+
+
+        }
 
         // Set entry to list entry at supplied index, throws an exception on failure
         public void Replace(T entry, int index) {}
